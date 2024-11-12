@@ -1,12 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yummy</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .order {
+            color: white;
+            width: 500px;
+            height: 200px;
+            font-size: 32px;
+
+            /* Enable Flexbox */
+            display: flex;
+            flex-direction: column;
+            /* Stack the items vertically */
+            justify-content: center;
+            /* Center vertically */
+            align-items: center;
+            /* Center horizontally */
+            text-align: center;
+            /* Ensure text inside <p> elements is centered */
+
+            margin-top: 200px;
+            /* Shift the div down */
+        }
+
+        .menu-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            /* Space between cards */
+            justify-content: center;
+            padding: 0 100px;
+        }
+
+        .menu-items .card {
+            flex: 1 1 calc(25% - 20px);
+            /* Each card takes up 25% minus the gap */
+            max-width: 14rem;
+            /* Narrower max width */
+            height: 24rem;
+            background-image: url('menu_bg.jpg');
+            /* Set background image */
+            background-size: cover;
+            /* Cover the entire area */
+            background-position: center;
+            /* Center the background image */
+            background-repeat: no-repeat;
+        }
+
+        .menu-items .card .img-wrapper {
+            width: 100%;
+            height: 200px;
+            /* Fixed height for all images */
+            overflow: hidden;
+            /* Ensure no overflow */
+        }
+
+        .menu-items .card .card-img-top {
+            width: 100%;
+            height: 200px;
+            /* Full height of the wrapper div */
+            object-fit: cover;
+            /* Ensures the image covers the area without distortion */
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            /* Remove any gap between the elements */
+        }
+
+        .rating-icon {
+            width: 16px;
+            height: 16px;
+            margin-left: 25px;
+            /* Optional: Small space between the image and text */
+        }
+
+        .rating-text {
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+            /* Remove any margin from the text */
+        }
+    </style>
 </head>
+
 <body>
-    
+    <!-- <h1>Hello, world!</h1> -->
+    <div class="bg-img"
+        style="background-image: url('bg_img.jpg'); background-repeat: no-repeat; background-size: cover;">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <!-- Brand with Logo -->
+                <a class="navbar-brand" href="#" style="color: red; font-weight: bold;">
+                    <img src="logo2.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                    Yummy
+                </a>
+
+                <!-- Toggler Button for Mobile View -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Right-Aligned Items -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" style="color:white ; font-weight: bold;" aria-current="page"
+                                href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white; font-weight: bold;" href="#">Cart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white; font-weight: bold;" href="#">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white; font-weight: bold;" href="#">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div style="width: 100vw; height: 750px;">
+            <div class="order">
+                <p style="font-weight: 1000;">Its not just an food its an Experience.</p>
+                <p style="font-size: medium;font-weight: 800;">The best delicious food that meets your needs now.</p>
+                <!-- <button class="btn btn-danger">
+                    <b>Order Now </b>
+                </button> -->
+                <!-- <button type="button" class="btn btn-danger btn-lg">Order Now ➔</button> -->
+                <!-- <button type="button" class="big-button">Order Now ➔</button> -->
+                <a href="#menu-items" class="btn btn-danger btn-lg rounded-pill">Order Now ➔</a>
+
+            </div>
+
+        </div>
+    </div>
+    <div
+        style="font: size 64px;font-weight: bold; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center;">
+        Order Fresh Food
+    </div>
+    <div class="menu-items" id="menu-items">
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="1.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Plain Dosa</h5>
+                    <h5 class="card-title">&#8377; 80</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="2.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Manchurian</h5>
+                    <h5 class="card-title">&#8377; 120</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="3.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Steamed Idli</h5>
+                    <h5 class="card-title">&#8377; 40</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="4.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Pasta</h5>
+                    <h5 class="card-title">&#8377; 80</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="5.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Burger Combo</h5>
+                    <h5 class="card-title">&#8377; 140</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="6.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Samosa</h5>
+                    <h5 class="card-title">&#8377; 60</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="7.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Noodles</h5>
+                    <h5 class="card-title">&#8377; 100</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>
+                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="width: 18rem;">
+            <div class="img-wrapper">
+                <img src="8.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Pizza</h5>
+                    <h5 class="card-title">&#8377; 190</h5> <!-- &#8377; is the symbol for Indian Rupee -->
+                </div>                
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <div class="rating">
+                    <a href="#" class="btn btn-danger">Add To Cart</a>
+                    <img src="star.png" alt="star" class="rating-icon"> <!-- Small image -->
+                    <span class="rating-text">4.5/5</span> <!-- Text next to the image -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div
+        style="background-color:#ffb343; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+        Build By &nbsp<b> Akash Upadhyay</b>
+</div>
+
 </body>
+
 </html>
