@@ -8,18 +8,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/signup.css">
     <title>Sign Up</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('resources/bg_img_2.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+        }
+
+        .formPage {
+            background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .formPage h1, .formPage p {
+            text-align: center;
+        }
+
+        .formPage button {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div class="formPage">
-
         <form method="get" action="index.html">
             <h1>Sign Up</h1>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Full Name" required>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" required>
-            <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Password" required>
-            <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Confirm Password" required>
-            <button type="submit" class="btn btn-primary">Create Account</button>
-            <p style="margin-top: 10px;">Already have an account?<a href="index.html">Log in</a></p>
+            <input type="text" class="form-control" placeholder="Full Name" required>
+            <input type="email" class="form-control" placeholder="Email" required>
+            <input type="password" class="form-control" placeholder="Password" required>
+            <input type="password" class="form-control" placeholder="Confirm Password" required>
+            <button type="submit" class="btn btn-danger">Create Account</button>
+            <p style="margin-top: 10px;">Already have an account? <a href="index.html">Log in</a></p>
         </form>
     </div>
 </body>
