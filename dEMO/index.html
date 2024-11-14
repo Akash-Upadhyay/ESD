@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Course Selection</title>
+    <style>
+        .course {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .course.disabled {
+            color: gray;
+            pointer-events: none;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Student Login</h1>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <div id="courseSelection" style="display:none;">
+        <h2>Course Selection</h2>
+        <div id="courseList"></div>
+        <button class="submit-btn" onclick="submitCourses()">Submit Selected Courses</button>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const courseSelectionDiv = document.getElementById('courseSelection');
+        const courseListDiv = document.getElementById('courseList');
+        let selectedCourses = [];
+
+        // Login submission and token handling
+        loginForm.onsubmit = async (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('http://localhost:8080/signin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                alert("Login Successful");
+                const data = await response.json();
+                sessionStorage.setItem('token', data.jwtToken); // Store the token after receiving it
+                console.log("Token received and stored:", data.jwtTtoken); // Log the received token
+                loadCourseSelection();
+            } else {
+                alert("Login failed. Please check your credentials.");
+            }
+        };
+
+        // Fetch and display course selection list
+        async function loadCourseSelection() {
+            loginForm.style.display = 'none';
+            courseSelectionDiv.style.display = 'block';
+
+            const token = sessionStorage.getItem('token');
+            console.log("Token retrieved:", token);
+            console.log("Authorization Header:", 'Bearer ' + token);
+            const response = await fetch('http://localhost:8080/courses', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+
+
+            if (response.ok) {
+                const courses = await response.json();
+                console.log(courses);
+                courseListDiv.innerHTML = '';
+                courses.forEach(course => {
+                    const courseDiv = document.createElement('div');
+                    courseDiv.className = `course ${course.isPrerequisiteMet ? '' : 'disabled'}`;
+                    courseDiv.innerHTML = `
+                        <input type="checkbox" ${!course.isPrerequisiteMet ? 'disabled' : ''} 
+                            onchange="toggleCourseSelection(${course.id}, this)">
+                        <label>${course.name} - ${course.professor} ${course.prerequisite ? '(Prerequisite: ' + course.prerequisite + ')' : ''}</label>
+                    `;
+                    courseListDiv.appendChild(courseDiv);
+                });
+            } else {
+                alert("Failed to load courses.");
+            }
+        }
+
+        // Toggle selected courses based on prerequisites
+        function toggleCourseSelection(courseId, checkbox) {
+            if (checkbox.checked) {
+                if (!selectedCourses.includes(courseId)) selectedCourses.push(courseId);
+            } else {
+                selectedCourses = selectedCourses.filter(id => id !== courseId);
+            }
+        }
+
+        // Submit selected courses
+        async function submitCourses() {
+            if (selectedCourses.length < 4 || selectedCourses.length > 6) {
+                alert("Please select between 4 and 6 courses.");
+                return;
+            }
+
+            const token = sessionStorage.getItem('token');
+            const response = await fetch('http://localhost:8080/api/courses/selection', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ selectedCourses })
+            });
+
+            if (response.ok) {
+                alert("Courses selected successfully.");
+            } else {
+                alert("Failed to submit course selection.");
+            }
+        }
+    </script>
+</body>
+
+</html>
