@@ -90,19 +90,21 @@ public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws 
 
 
         // Check if the admin user exists, and create it if not
-        if (!jdbcUserDetailsManager.userExists("admin")) {
-            // Create user with 'enabled' field
-            UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername("admin")
-                    .password(passwordEncoder().encode("admin123"))
-                    .roles("ADMIN")
-                    .disabled(false) // Enable the admin user
-                    .build();
-            jdbcUserDetailsManager.createUser(userDetails);
-//            jdbcUserDetailsManager.getJdbcTemplate().update(
-//                    "INSERT INTO authorities (username, authority) VALUES (?, ?)",
-//                    "admin", "ROLE_ADMIN"
-//            );
-        }
+//        if (!jdbcUserDetailsManager.userExists("admin")) {
+//            // Create user with 'enabled' field
+//            UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername("admin")
+//                    .password(passwordEncoder().encode("admin123"))
+//                    .roles("ADMIN")
+//                    .disabled(false) // Enable the admin user
+//                    .build();
+//            jdbcUserDetailsManager.createUser(userDetails);
+////            jdbcUserDetailsManager.getJdbcTemplate().update(
+////                    "INSERT INTO authorities (username, authority) VALUES (?, ?)",
+////                    "admin", "ROLE_ADMIN"
+////            );
+//        }
+
+
 
         return jdbcUserDetailsManager;
     }

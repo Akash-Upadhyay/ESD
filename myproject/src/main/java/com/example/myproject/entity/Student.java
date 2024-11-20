@@ -27,6 +27,19 @@ public class Student {
 
     private Integer graduationYear; // Expected graduation year
 
+    @ManyToOne
+    @JoinColumn(name = "domain_id", referencedColumnName = "domain_id")
+    private Domain domain; // Reference to Domain entity
+
+    @ManyToOne
+    @JoinColumn(name = "placement_id", referencedColumnName = "id")
+    private PlacementStudent placement; // Reference to PlacementStudent entity
+
+    @ManyToOne
+    @JoinColumn(name = "specialization_id", referencedColumnName = "specialization_id")
+    private Specialization specialization;
+
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -98,5 +111,29 @@ public class Student {
 
     public void setGraduationYear(Integer graduationYear) {
         this.graduationYear = graduationYear;
+    }
+
+    public Domain getDomain() {
+        return domain;
+    }
+
+    public void setDomain(Domain domain) {
+        this.domain = domain;
+    }
+
+    public PlacementStudent getPlacement() {
+        return placement;
+    }
+
+    public void setPlacement(PlacementStudent placement) {
+        this.placement = placement;
+    }
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
     }
 }

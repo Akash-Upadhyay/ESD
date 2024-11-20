@@ -49,6 +49,7 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody Map<String, String> request) {
+        System.out.println(request);
         String username = request.get("username");
         String password = request.get("password");
 

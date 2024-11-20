@@ -105,15 +105,85 @@ public class CourseController {
 //    }
         // Placeholder response for now
 
+
+    //working with the two api logic --
+
+//    @GetMapping("/available")
+//    public ResponseEntity<List<AvailableCourseDTO>> getAvailableCourses(
+//            @RequestParam String rollno,
+//            @RequestParam String term) {
+
+//        // Fetch courses for the specified term
+//        List<Course> coursesInTerm = courseRepository.findByTerm(term);
+
+//        //Fetch student courses based on the roll number
+//        List<StudentCourses> studentCourses = studentCoursesRepository.findByStudent_RollNo(rollno);
+
+//        // Extract the course codes of completed courses
+//        List<String> completedCourseCodes = studentCourses.stream()
+//                .map(sc -> sc.getCourse().getCourseCode())
+//                .toList();
+
+//        // Step 3: Filter out courses that the student has already completed
+//        List<Course> availableCourses = coursesInTerm.stream()
+//                .filter(course -> !completedCourseCodes.contains(course.getCourseCode()))
+//                .toList();
+
+//        // Step 4: Build the response with course details and prerequisites
+//        List<AvailableCourseDTO> courseDetails = new ArrayList<>();
+
+//        for (Course course : availableCourses) {
+//            // Fetch prerequisites for the current course
+//            List<CoursePrerequisite> prerequisites = coursePrerequisiteRepository.findByCourse_CourseCode(course.getCourseCode());
+
+//            // Extract prerequisite course codes
+//            List<String> prerequisiteCodes = prerequisites.stream()
+//                    .map(prerequisite -> prerequisite.getPrerequisite().getCourseCode())
+//                    .collect(Collectors.toList());
+
+//            // Create an AvailableCourseDTO object
+//            AvailableCourseDTO courseDTO = new AvailableCourseDTO();
+//            courseDTO.setName(course.getName());
+//            courseDTO.setCourseCode(course.getCourseCode());
+//            courseDTO.setProfessor(course.getFaculty());
+//            courseDTO.setCredits(course.getCredit());
+//            courseDTO.setPrerequisites(prerequisiteCodes);
+
+//            // Add to the response list
+//            courseDetails.add(courseDTO);
+//        }
+
+//        // Step 5: Return the response
+//        return ResponseEntity.ok(courseDetails);
+
+//    }
+
+
+//    @GetMapping("/completed")
+//    public ResponseEntity<List<String>> getCompletedCourses(
+//            @RequestParam String rollno) {
+
+//        // Fetch courses completed by the student
+//        List<StudentCourses> studentCourses = studentCoursesRepository.findByStudent_RollNo(rollno);
+
+//        // Extract the course codes of completed courses
+//        List<String> completedCourseCodes = studentCourses.stream()
+//                .map(studentCourse -> studentCourse.getCourse().getCourseCode())
+//                .collect(Collectors.toList());
+
+//        // Return the list of completed course codes
+//        return ResponseEntity.ok(completedCourseCodes);
+//    }
+
+
     @GetMapping("/available")
     public ResponseEntity<List<AvailableCourseDTO>> getAvailableCourses(
             @RequestParam String rollno,
             @RequestParam String term) {
-
         // Fetch courses for the specified term
         List<Course> coursesInTerm = courseRepository.findByTerm(term);
 
-        //Fetch student courses based on the roll number
+        // Fetch student courses based on the roll number
         List<StudentCourses> studentCourses = studentCoursesRepository.findByStudent_RollNo(rollno);
 
         // Extract the course codes of completed courses
@@ -121,56 +191,44 @@ public class CourseController {
                 .map(sc -> sc.getCourse().getCourseCode())
                 .toList();
 
-        // Step 3: Filter out courses that the student has already completed
-        List<Course> availableCourses = coursesInTerm.stream()
-                .filter(course -> !completedCourseCodes.contains(course.getCourseCode()))
-                .toList();
-
-        // Step 4: Build the response with course details and prerequisites
+        // Step 3: Filter courses based on prerequisite satisfaction
         List<AvailableCourseDTO> courseDetails = new ArrayList<>();
 
-        for (Course course : availableCourses) {
+        for (Course course : coursesInTerm) {
             // Fetch prerequisites for the current course
+
+            if (completedCourseCodes.contains(course.getCourseCode())) {
+                continue;
+            }
+            
             List<CoursePrerequisite> prerequisites = coursePrerequisiteRepository.findByCourse_CourseCode(course.getCourseCode());
 
             // Extract prerequisite course codes
             List<String> prerequisiteCodes = prerequisites.stream()
                     .map(prerequisite -> prerequisite.getPrerequisite().getCourseCode())
-                    .collect(Collectors.toList());
+                    .toList();
 
-            // Create an AvailableCourseDTO object
-            AvailableCourseDTO courseDTO = new AvailableCourseDTO();
-            courseDTO.setName(course.getName());
-            courseDTO.setCourseCode(course.getCourseCode());
-            courseDTO.setProfessor(course.getFaculty());
-            courseDTO.setCredits(course.getCredit());
-            courseDTO.setPrerequisites(prerequisiteCodes);
+            // Check if all prerequisites are met
+            boolean prerequisitesMet = prerequisiteCodes.isEmpty() || completedCourseCodes.containsAll(prerequisiteCodes);
 
-            // Add to the response list
-            courseDetails.add(courseDTO);
+            if (prerequisitesMet) {
+                // Create an AvailableCourseDTO object
+                AvailableCourseDTO courseDTO = new AvailableCourseDTO();
+                courseDTO.setName(course.getName());
+                courseDTO.setCourseCode(course.getCourseCode());
+                courseDTO.setProfessor(course.getFaculty());
+                courseDTO.setCredits(course.getCredit());
+                courseDTO.setPrerequisites(prerequisiteCodes);
+
+                // Add to the response list
+                courseDetails.add(courseDTO);
+            }
         }
 
-        // Step 5: Return the response
+        // Step 4: Return the response
         return ResponseEntity.ok(courseDetails);
-
     }
 
-
-    @GetMapping("/completed")
-    public ResponseEntity<List<String>> getCompletedCourses(
-            @RequestParam String rollno) {
-
-        // Fetch courses completed by the student
-        List<StudentCourses> studentCourses = studentCoursesRepository.findByStudent_RollNo(rollno);
-
-        // Extract the course codes of completed courses
-        List<String> completedCourseCodes = studentCourses.stream()
-                .map(studentCourse -> studentCourse.getCourse().getCourseCode())
-                .collect(Collectors.toList());
-
-        // Return the list of completed course codes
-        return ResponseEntity.ok(completedCourseCodes);
-    }
 
 
     @PostMapping("/enroll")
