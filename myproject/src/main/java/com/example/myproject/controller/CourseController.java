@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -232,7 +233,7 @@ public class CourseController {
 
 
     @PostMapping("/enroll")
-    public ResponseEntity<String> enrollStudent(@RequestBody CourseEnrollmentRequest request) {
+    public  ResponseEntity<Map<String, String>> enrollStudent(@RequestBody CourseEnrollmentRequest request) {
         // Extract  and selected courses
         System.out.println("Received request: " + request);
 
@@ -241,7 +242,9 @@ public class CourseController {
 
 
         if (selectedCourses == null || selectedCourses.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No courses selected for enrollment.");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No courses selected for enrollment.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "No courses selected for enrollment."));
         }
 
         for (String courseId : selectedCourses) {
@@ -255,7 +258,10 @@ public class CourseController {
             enrollStudentInCourse_Student(studentCoursesDTO);
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Student enrollment initiated for all courses.");
+//        return ResponseEntity.status(HttpStatus.CREATED).body("Student enrollment initiated for all courses.");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Student enrollment initiated for all courses."));
+
     }
 
 
