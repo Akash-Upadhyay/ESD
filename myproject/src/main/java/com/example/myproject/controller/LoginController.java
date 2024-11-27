@@ -31,20 +31,20 @@ public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/hello")
-    public String SayHello(){
-        return "Hello";
-    }
-
-    @GetMapping("/hello/akash")
-    public String SayHelloAkash(){
-        return "Hello Akash";
-    }
-
-    @GetMapping("/akash")
-    public String SayAkash(){
-        return "Akash";
-    }
+//    @GetMapping("/hello")
+//    public String SayHello(){
+//        return "Hello";
+//    }
+//
+//    @GetMapping("/hello/akash")
+//    public String SayHelloAkash(){
+//        return "Hello Akash";
+//    }
+//
+//    @GetMapping("/akash")
+//    public String SayAkash(){
+//        return "Akash";
+//    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {

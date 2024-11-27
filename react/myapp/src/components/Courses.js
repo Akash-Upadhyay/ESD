@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
-    const history = useNavigate();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,40 +47,40 @@ const Courses = () => {
   // Handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-  
-    // Get the roll number from localStorage
+
     const rollno = localStorage.getItem('username'); // Assuming 'username' is the roll number in localStorage
-  
-    // Prepare the data to send to the backend
+
     const data = {
       rollno: rollno,
       selectedCourses: selectedCourses, // This will be the list of selected course codes
     };
-  
-    // Send the POST request to the backend
+
     fetch('http://localhost:8080/courses/enroll', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`, // JWT token for authentication
       },
-      body: JSON.stringify(data), // Convert data to JSON format
+      body: JSON.stringify(data),
     })
-      .then((response) => response.json()) // Parse the JSON response
+      .then((response) => response.json())
       .then((data) => {
-        // Handle success response
-        console.log('Courses enrolled successfully:', data);
-        // You can show a success message or redirect the user if needed
         alert('Courses enrolled successfully!');
-        history("/");
+        navigate('/');
       })
       .catch((error) => {
-        // Handle error response
         console.error('Error enrolling courses:', error);
         alert('Failed to enroll in courses.');
       });
   };
-  
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Clear the JWT token
+    localStorage.removeItem('username'); // Clear any other stored user data if necessary
+    alert('You have been logged out.');
+    navigate('/login'); // Redirect to the login page
+  };
 
   // Check if the submit button should be enabled
   const isSubmitEnabled = selectedCourses.length >= 4 && selectedCourses.length <= 6;
@@ -91,30 +91,111 @@ const Courses = () => {
   }
 
   return (
-    <div>
-      <h2>Available Courses</h2>
-      <form onSubmit={handleSubmit}>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <h2 style={styles.heading}>Available Courses</h2>
+        <button onClick={handleLogout} style={styles.logoutButton}>Logout</button>
+      </div>
+      <form onSubmit={handleSubmit} style={styles.form}>
         {courses.map((course) => (
-          <div key={course.id}>
-            <label>
+          <div key={course.id} style={styles.courseItem}>
+            <label style={styles.courseLabel}>
               <input
                 type="checkbox"
-                checked={selectedCourses.includes(course.courseCode)} // Check if the course is selected
-                onChange={() => handleCheckboxChange(course.courseCode)} // Handle checkbox change
+                checked={selectedCourses.includes(course.courseCode)}
+                onChange={() => handleCheckboxChange(course.courseCode)}
+                style={styles.checkbox}
+                disabled={!course.eligible} // Disable checkbox if course is not eligible
               />
-              {course.name} - {course.professor} - {course.credits} Credits
+              <span>{course.courseCode} - {course.name} - {course.professor} - {course.credits} Credits</span>
             </label>
-            <p>Prerequisites: {course.prerequisites.join(', ')}</p>
+            <p style={styles.prerequisites}>Prerequisites: {course.prerequisites.join(', ')}</p>
           </div>
         ))}
 
-        {/* Submit button */}
-        <button type="submit" disabled={!isSubmitEnabled}>
-          Submit
+        <button type="submit" disabled={!isSubmitEnabled} style={isSubmitEnabled ? styles.submitButton : styles.submitButtonDisabled}>
+          Enroll
         </button>
       </form>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '3rem 1rem',
+    background: 'linear-gradient(to bottom, #f0f7ff, #e3f2fd)',
+    minHeight: '100vh',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: '700px',
+    marginBottom: '1.5rem',
+  },
+  heading: {
+    fontSize: '2.2rem',
+    color: '#333',
+    fontFamily: 'Arial, sans-serif',
+  },
+  logoutButton: {
+    backgroundColor: '#d9534f', // Red button for logout
+    color: '#fff',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    maxWidth: '700px',
+    backgroundColor: '#fff',
+    padding: '2.5rem',
+    borderRadius: '12px',
+    boxShadow: '0 6px 15px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #e1e1e1',
+  },
+  courseItem: {
+    marginBottom: '1.5rem',
+    padding: '15px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    backgroundColor: '#f9f9f9',
+  },
+  courseLabel: {
+    fontSize: '1.1rem',
+    color: '#333',
+  },
+  checkbox: {
+    marginRight: '10px',
+  },
+  prerequisites: {
+    fontSize: '0.95rem',
+    color: '#666',
+    marginTop: '0.5rem',
+  },
+  submitButton: {
+    backgroundColor: '#66bb6a',
+    color: '#fff',
+    padding: '12px 20px',
+    fontSize: '1rem',
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    marginTop: '1.5rem',
+  },
+  submitButtonDisabled: {
+    backgroundColor: '#ccc',
+    cursor: 'not-allowed',
+  },
 };
 
 export default Courses;
