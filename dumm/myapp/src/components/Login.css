@@ -1,0 +1,73 @@
+.login-container {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 30px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #f9f9f9;
+  transition: all 0.3s ease-in-out;
+}
+
+.login-container:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Add a slight hover effect */
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.form-group input:focus {
+  border-color: #007bff; /* Highlight input on focus */
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.login-button:hover {
+  background-color: #218838;
+  transform: scale(1.05); /* Slight scale-up effect */
+}
+
+.login-button:active {
+  background-color: #1e7e34; /* Darker shade on active press */
+}
+
+.login-button:focus {
+  outline: none;
+}
