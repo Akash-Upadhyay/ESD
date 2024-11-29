@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 const BASE_URL = 'http://localhost:8080/courses';
 
 // Fetch available courses for a student
@@ -9,12 +10,16 @@ export const fetchAvailableCourses = async (rollno, term, token) => {
     },
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch courses');
+    if (response.status === 403) {
+      throw new Error('Token expired or invalid');
+    } else {
+      throw new Error('Failed to enroll in courses');
+    }
   }
   return await response.json();
 };
 
-// Enroll student in selected courses
+
 export const enrollCourses = async (data, token) => {
   const response = await fetch(`${BASE_URL}/enroll`, {
     method: 'POST',
@@ -24,8 +29,19 @@ export const enrollCourses = async (data, token) => {
     },
     body: JSON.stringify(data),
   });
+
   if (!response.ok) {
-    throw new Error('Failed to enroll in courses');
+    // Check if the status is 401 (Unauthorized) for token expiration
+    if (response.status === 403) {
+      throw new Error('Token expired or invalid');
+    } else {
+      throw new Error('Failed to enroll in courses');
+    }
   }
+
+  // If the response is okay, return the JSON response
   return await response.json();
 };
+
+
+
